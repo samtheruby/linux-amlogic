@@ -47,7 +47,7 @@
 #include <linux/amlogic/cpu_version.h>
 #include <linux/amlogic/scpi_protocol.h>
 #ifdef CONFIG_AMLOGIC_LEGACY_EARLY_SUSPEND
-#include <linux/earlysuspend.h>
+/* struct early_suspend and helpers are declared in linux/amlogic/pm.h */
 static struct early_suspend aocec_suspend_handler;
 #endif
 #include "hdmi_tx_cec_20.h"
