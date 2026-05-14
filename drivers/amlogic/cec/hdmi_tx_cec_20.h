@@ -20,8 +20,9 @@
 
 #include <linux/irq.h>
 #include <linux/amlogic/cpu_version.h>
-#include "hdmi_info_global.h"
-#include "hdmi_tx_module.h"
+#ifdef CONFIG_AMLOGIC_HDMITX
+#include <linux/amlogic/media/vout/hdmi_tx/hdmi_tx_module.h>
+#endif
 
 #define CEC0_LOG_ADDR 4 /* MBX logical address */
 #define TV_CEC_INTERVAL     (HZ * 3)
@@ -302,5 +303,22 @@ enum cec_device_menu_state_e {
 int cec_ll_tx(const unsigned char *msg, unsigned char len);
 int cec_ll_rx(unsigned char *msg, unsigned char *len);
 void cec_enable_arc_pin(bool enable);
+
+struct spd_device_info {
+	unsigned int handle_type;
+	unsigned int vendor_id;
+	char osd_name[16];
+	struct list_head spd_info_list;
+};
+
+struct current_spd_device_info {
+	unsigned char log_addr;
+	unsigned int phy_addr;
+	unsigned char port_id;
+	unsigned int vendor_id;
+	bool is5v;
+	char osd_name[16];
+};
+
 #endif
 
