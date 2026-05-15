@@ -34,7 +34,7 @@ unsigned int aocec_rd_reg(unsigned long addr);
 void aocec_wr_reg(unsigned long addr, unsigned long data);
 unsigned int hdmirx_cec_read(unsigned int reg);
 void hdmirx_cec_write(unsigned int reg, unsigned int value);
-inline void hdmirx_set_bits_dwc(u32 reg, u32 bits,
+void hdmirx_set_bits_dwc(u32 reg, u32 bits,
 				       u32 start, u32 len);
 unsigned int read_ao(unsigned int addr);
 void write_ao(unsigned int addr, unsigned int data);
@@ -48,7 +48,7 @@ void ceca_hw_reset(void);
 int cecb_trigger_tx(const unsigned char *msg, unsigned char len, unsigned char sig_free);
 void cecb_check_irq_enable(void);
 int cecb_irq_stat(void);
-inline void cecb_clear_irq(unsigned int flags);
+void cecb_clear_irq(unsigned int flags);
 
 void cec_set_clk(struct device *dev);
 void cec_hw_init(void);
@@ -83,8 +83,8 @@ void cec_report_power_status(int dest, int status);
 
 /* common logic interface */
 bool need_nack_repeat_msg(const unsigned char *msg, int len, int t);
-inline bool is_poll_message(unsigned char header);
-inline bool is_get_cec_ver_msg(const unsigned char *msg, int len);
+bool is_poll_message(unsigned char header);
+bool is_get_cec_ver_msg(const unsigned char *msg, int len);
 
 unsigned int cec_config(unsigned int value, bool wr_flag);
 unsigned int cec_config2_phyaddr(unsigned int value, bool wr_flag);
@@ -112,7 +112,7 @@ void cec_message_op(unsigned char *msg, unsigned char len);
 void cec_debug_fs_init(void);
 unsigned int read_clock(unsigned int addr);
 unsigned int read_periphs(unsigned int addr);
-inline unsigned int get_pin_status(void);
+unsigned int get_pin_status(void);
 void cec_spd_info_init(void);
 void delete_current_spd_info(unsigned int phy_addr);
 void update_current_spd_5v(int port_id, bool is5V);

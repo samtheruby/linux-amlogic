@@ -300,7 +300,7 @@ enum cec_device_menu_state_e {
 	DEVICE_MENU_INACTIVE,
 };
 
-int cec_ll_tx(const unsigned char *msg, unsigned char len);
+int cec_ll_tx(const unsigned char *msg, unsigned char len, unsigned char signal_free_time);
 int cec_ll_rx(unsigned char *msg, unsigned char *len);
 void cec_enable_arc_pin(bool enable);
 

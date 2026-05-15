@@ -405,7 +405,7 @@ void hdmirx_cec_write(unsigned int reg, unsigned int value)
 		hdmirx_wr_dwc(reg, value);
 }
 
-inline void hdmirx_set_bits_dwc(u32 reg, u32 bits,
+void hdmirx_set_bits_dwc(u32 reg, u32 bits,
 				       u32 start, u32 len)
 {
 	unsigned int tmp;
@@ -853,7 +853,7 @@ void cecb_check_irq_enable(void)
 	}
 }
 
-inline void cecb_clear_irq(unsigned int flags)
+void cecb_clear_irq(unsigned int flags)
 {
 	if (!cec_dev->plat_data->ee_to_ao)
 		hdmirx_cec_write(DWC_AUD_CEC_ICLR, flags);
@@ -917,11 +917,11 @@ int cecb_trigger_tx(const unsigned char *msg, unsigned char len, unsigned char s
 
 	if (cec_dev->chk_sig_free_time) {
 		cec_ctrl = 0x1;
-		if (sig_free == CEC_SIGNAL_FREE_TIME_RETRY)
+		if (sig_free == SIGNAL_FREE_TIME_RETRY)
 			cec_ctrl |= (0 << 1);
-		else if (sig_free == CEC_SIGNAL_FREE_TIME_NEW_INITIATOR)
+		else if (sig_free == SIGNAL_FREE_TIME_NEW_INITIATOR)
 			cec_ctrl |= (1 << 1);
-		else if (sig_free == CEC_SIGNAL_FREE_TIME_NEXT_XFER)
+		else if (sig_free == SIGNAL_FREE_TIME_NEXT_XFER)
 			cec_ctrl |= (2 << 1);
 		else
 			cec_ctrl |= (1 << 1);
@@ -1668,7 +1668,7 @@ void cec_give_version(unsigned int dest)
 		msg[0] = ((index & 0xf) << 4) | dest;
 		msg[1] = CEC_OC_CEC_VERSION;
 		msg[2] = cec_dev->cec_info.cec_version;
-		cec_ll_tx(msg, 3, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+		cec_ll_tx(msg, 3, SIGNAL_FREE_TIME_NEW_INITIATOR);
 	}
 }
 
@@ -1686,7 +1686,7 @@ void cec_report_physical_address_smp(void)
 	msg[3] = phy_addr_cd;
 	msg[4] = cec_dev->dev_type;
 
-	cec_ll_tx(msg, 5, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 5, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_device_vendor_id(void)
@@ -1702,7 +1702,7 @@ void cec_device_vendor_id(void)
 	msg[3] = (vendor_id >> 8) & 0xff;
 	msg[4] = (vendor_id >> 0) & 0xff;
 
-	cec_ll_tx(msg, 5, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 5, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_give_deck_status(unsigned int dest)
@@ -1713,7 +1713,7 @@ void cec_give_deck_status(unsigned int dest)
 	msg[0] = ((index & 0xf) << 4) | dest;
 	msg[1] = CEC_OC_DECK_STATUS;
 	msg[2] = 0x1a;
-	cec_ll_tx(msg, 3, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 3, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_menu_status_smp(int dest, int status)
@@ -1727,7 +1727,7 @@ void cec_menu_status_smp(int dest, int status)
 		msg[2] = DEVICE_MENU_ACTIVE;
 	else
 		msg[2] = DEVICE_MENU_INACTIVE;
-	cec_ll_tx(msg, 3, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 3, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_inactive_source(int dest)
@@ -1743,7 +1743,7 @@ void cec_inactive_source(int dest)
 	msg[2] = phy_addr_ab;
 	msg[3] = phy_addr_cd;
 
-	cec_ll_tx(msg, 4, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 4, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_set_osd_name(int dest)
@@ -1757,7 +1757,7 @@ void cec_set_osd_name(int dest)
 		msg[1] = CEC_OC_SET_OSD_NAME;
 		memcpy(&msg[2], cec_dev->cec_info.osd_name, osd_len);
 
-		cec_ll_tx(msg, 2 + osd_len, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+		cec_ll_tx(msg, 2 + osd_len, SIGNAL_FREE_TIME_NEW_INITIATOR);
 	}
 }
 
@@ -1774,7 +1774,7 @@ void cec_active_source_smp(void)
 	msg[1] = CEC_OC_ACTIVE_SOURCE;
 	msg[2] = phy_addr_ab;
 	msg[3] = phy_addr_cd;
-	cec_ll_tx(msg, 4, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 4, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_request_active_source(void)
@@ -1784,7 +1784,7 @@ void cec_request_active_source(void)
 
 	msg[0] = ((index & 0xf) << 4) | CEC_BROADCAST_ADDR;
 	msg[1] = CEC_OC_REQUEST_ACTIVE_SOURCE;
-	cec_ll_tx(msg, 2, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 2, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 void cec_set_stream_path(unsigned char *msg)
@@ -1811,11 +1811,11 @@ void cec_report_power_status(int dest, int status)
 	msg[0] = ((index & 0xf) << 4) | dest;
 	msg[1] = CEC_OC_REPORT_POWER_STATUS;
 	msg[2] = status;
-	cec_ll_tx(msg, 3, CEC_SIGNAL_FREE_TIME_NEW_INITIATOR);
+	cec_ll_tx(msg, 3, SIGNAL_FREE_TIME_NEW_INITIATOR);
 }
 
 /* --------common logic interface------- */
-inline bool is_poll_message(unsigned char header)
+bool is_poll_message(unsigned char header)
 {
 	unsigned char initiator, follower;
 
@@ -1842,7 +1842,7 @@ static inline bool is_report_phy_addr_msg(const unsigned char *msg, int len)
 	return false;
 }
 
-inline bool is_get_cec_ver_msg(const unsigned char *msg, int len)
+bool is_get_cec_ver_msg(const unsigned char *msg, int len)
 {
 	if (!msg || len < 2)
 		return false;
@@ -2686,7 +2686,7 @@ int __attribute__((weak))hdmirx_set_cec_cfg(u32 cfg)
 	return 0;
 }
 
-inline unsigned int get_pin_status(void)
+unsigned int get_pin_status(void)
 {
 	unsigned int reg;
 

@@ -1984,62 +1984,37 @@ static char *aml_cec_class_devnode(struct device *dev, umode_t *mode)
 	return NULL;
 }
 
-static CLASS_ATTR_WO(cmd);
-static CLASS_ATTR_WO(cmda);
-static CLASS_ATTR_WO(cmdb);
-static CLASS_ATTR_RO(port_num);
-static CLASS_ATTR_RO(osd_name);
-static CLASS_ATTR_RO(dump_reg);
-static CLASS_ATTR_RO(port_status);
-static CLASS_ATTR_RO(pin_status);
-static CLASS_ATTR_RO(cec_version);
-static CLASS_ATTR_RO(arc_port);
-static CLASS_ATTR_RO(wake_up);
-static CLASS_ATTR_RW(port_seq);
-static CLASS_ATTR_RW(physical_addr);
-static CLASS_ATTR_RW(vendor_id);
-static CLASS_ATTR_RW(menu_language);
-static CLASS_ATTR_RW(device_type);
-static CLASS_ATTR_RW(dbg_en);
-static CLASS_ATTR_RW(log_addr);
-static CLASS_ATTR_RW(fun_cfg);
-static CLASS_ATTR_RW(dbg);
-static CLASS_ATTR_RO(conn_status);
-static CLASS_ATTR_RO(port_info);
-static CLASS_ATTR_RO(dump_status);
-
-static struct attribute *aocec_class_attrs[] = {
-	&class_attr_cmd.attr,
-	&class_attr_cmda.attr,
-	&class_attr_cmdb.attr,
-	&class_attr_port_num.attr,
-	&class_attr_osd_name.attr,
-	&class_attr_dump_reg.attr,
-	&class_attr_port_status.attr,
-	&class_attr_pin_status.attr,
-	&class_attr_cec_version.attr,
-	&class_attr_arc_port.attr,
-	&class_attr_wake_up.attr,
-	&class_attr_port_seq.attr,
-	&class_attr_physical_addr.attr,
-	&class_attr_vendor_id.attr,
-	&class_attr_menu_language.attr,
-	&class_attr_device_type.attr,
-	&class_attr_dbg_en.attr,
-	&class_attr_log_addr.attr,
-	&class_attr_fun_cfg.attr,
-	&class_attr_dbg.attr,
-	&class_attr_conn_status.attr,
-	&class_attr_port_info.attr,
-	&class_attr_dump_status.attr,
-	NULL,
+static struct class_attribute aocec_class_attr_list[] = {
+	__ATTR_WO(cmd),
+	__ATTR_WO(cmda),
+	__ATTR_WO(cmdb),
+	__ATTR_RO(port_num),
+	__ATTR_RO(osd_name),
+	__ATTR_RO(dump_reg),
+	__ATTR_RO(port_status),
+	__ATTR_RO(pin_status),
+	__ATTR_RO(cec_version),
+	__ATTR_RO(arc_port),
+	__ATTR_RO(wake_up),
+	__ATTR_RW(port_seq),
+	__ATTR_RW(physical_addr),
+	__ATTR_RW(vendor_id),
+	__ATTR_RW(menu_language),
+	__ATTR_RW(device_type),
+	__ATTR_RW(dbg_en),
+	__ATTR_RW(log_addr),
+	__ATTR_RW(fun_cfg),
+	__ATTR_RW(dbg),
+	__ATTR_RO(conn_status),
+	__ATTR_RO(port_info),
+	__ATTR_RO(dump_status),
+	__ATTR_NULL,
 };
 
-ATTRIBUTE_GROUPS(aocec_class);
 static struct class aocec_class = {
 	.name = CEC_DEV_NAME,
 	.owner = THIS_MODULE,
-	.class_groups = aocec_class_groups,
+	.class_attrs = aocec_class_attr_list,
 	.devnode = aml_cec_class_devnode,
 };
 
@@ -3374,3 +3349,8 @@ void __exit cec_uninit(void)
 {
 	platform_driver_unregister(&aml_cec_driver);
 }
+
+module_init(cec_init);
+module_exit(cec_uninit);
+MODULE_DESCRIPTION("AMLOGIC HDMI TX CEC driver");
+MODULE_LICENSE("GPL");
