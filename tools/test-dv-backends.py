@@ -49,6 +49,10 @@ struct vframe_s; enum vpu_mod_e {HOST_VPU};enum vd_path_e {HOST_VD};
 #define ARRAY_SIZE(a) (sizeof(a)/sizeof((a)[0]))
 #define __aligned(n) __attribute__((aligned(n)))
 #define READ_ONCE(x) (x)
+/* Graphics-probe and power state used by the extracted backend helpers. */
+#define WRITE_ONCE(x,v) ((x)=(v))
+static unsigned int dv_graphics_probe;
+static bool dolby_vision_on,dolby_vision_core1_on;
 #define module_param(...)
 #define MODULE_PARM_DESC(...)
 #define EXPORT_SYMBOL(...)

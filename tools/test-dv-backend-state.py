@@ -75,11 +75,18 @@ typedef uint64_t u64;typedef uint32_t u32;
 struct class{};struct class_attribute{};
 static bool dv_pending_new,dolby_vision_on,dolby_vision_core1_on,dv_new_runtime_failed;
 static unsigned int dv_new_backend_available;
+/* Graphics-probe state the backend helpers reset and read (dv_graphics_probe.h). */
+#define WRITE_ONCE(dest,value) ((dest)=(value))
+static unsigned int dv_graphics_probe;
+static bool dv_graphics_probe_backend(u64 *epoch, bool newer) __attribute__((unused));
 '''
     wrapper_preamble = r'''
 #include <string.h>
 typedef uint8_t u8;
 #define WRITE_ONCE(dest,value) ((dest)=(value))
+/* Graphics probe and stability stay off in this model (dv_graphics_*.h). */
+static void dv_graphics_probe_stop(const char *reason){(void)reason;}
+static bool dv_graphics_stability_fresh(void){return false;}
 #define CP_FLAG_CHANGE_ALL 0xff
 #define CP_FLAG_CONST_TC2 2
 #define CP_FLAG_CHANGE_TC2 4
